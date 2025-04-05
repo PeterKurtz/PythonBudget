@@ -53,25 +53,26 @@ class Table:
 
         return sqlString
         
-    def createInsertString(self, numOfValues):
+    def createInsertString(self):
         insertString = f"INSERT INTO {self.name} ("
 
-        for index, column in enumerate(len(self.columnArray)):
-            insertString = f"{insertString},"
+        for index, column in enumerate(self.columnArray):
+            insertString = f"{insertString}{column.get_name()}"
 
             if index != len(self.columnArray) - 1:
-                insertString = f"{insertString}"
+                insertString = f"{insertString}, "
 
             else:
                 insertString = f"{insertString})"
 
-            insertString = f"{insertString} VALUES ("
+        insertString = f"{insertString} VALUES ("
 
-        for x in range(numOfValues):
+        numOfVariables = len(self.columnArray)
+
+        for x in range(numOfVariables):
             insertString = f"{insertString} ?"
-            if x != len(numOfValues) - 1:
+            if x != numOfVariables - 1:
                 insertString = f"{insertString}, "
-
             else:
                 insertString = f"{insertString})"
 
@@ -84,3 +85,5 @@ ColumnsForSavingCat = [SavingsID, SavingsCatName, CreationDate]
 SavingsCat = Table("SavingsCat", ColumnsForSavingCat, "Categories of savings.", SavingsID.get_name())
 
 print(SavingsCat.CreateSQLTable())
+print()
+print(SavingsCat.createInsertString())
