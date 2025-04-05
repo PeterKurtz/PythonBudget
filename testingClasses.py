@@ -9,3 +9,16 @@ SavingsCat = Table("SavingsCat", ColumnsForSavingCat, "Categories of savings.", 
 print(SavingsCat.CreateSQLTable())
 print()
 print(SavingsCat.createInsertString())
+
+SavingsID = ForeignIDColumn("SavingsID", "INTEGER", False, "Savings ID for Irregular Costs", "SavingsCat", "SavingsID")
+Date = Column("Date", "DATE", False, "Date when created")
+Amount = Column("Amount", "INTEGER", False, "Amount for Irregular Costs")
+Description = Column("Description", "TEXT", False, "Description of Costs")
+ColumnsForIrregularCosts = [SavingsID, Date, Amount, Description]
+IrregularCosts = Table("IrregularCosts", ColumnsForIrregularCosts, "All irregular costs used. Money that takes from savings", SavingsID.get_name())
+
+print()
+
+print(IrregularCosts.CreateSQLTable())
+print()
+print(IrregularCosts.createInsertString())
