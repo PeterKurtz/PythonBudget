@@ -75,5 +75,32 @@ Description = Column("Description", "TEXT", False, "Description for the investme
 ColumnsForInvestments = [InvestmentID, Date, AmountPaid, TotalAmount, Description]
 Investments = Table("Investments", ColumnsForInvestments, "Investment transactions", "InvestmentID")
 
+#PaymentCat Setup
+PaymentID = Column("PaymentID", "INTEGER", True, "Payment ID for payment categories.")
+PaymentName = Column("PaymentName", "TEXT", False, "Name of Payment Category")
+CreationDate = Column("CreationDate", "DATE", False, "Date category was created.")
+ColumnsForPaymentCat = [PaymentID, PaymentName, CreationDate]
+PaymentCat = Table("PaymentCat", ColumnsForPaymentCat, "Categories of Payments.", PaymentID.get_name())
 
+#Payments Setup
+PaymentID = ForeignIDColumn("PaymentID", "INTEGER", True, "Payment ID for payment categories", "PaymentCat", "PaymentID")
+Date = Column("Date", "DATE", False, "Date Payment was inputed")
+Amount = Column("Amount", "NUMERIC", False, "Amount paid")
+Explanation = Column("Explanation", "TEXT", False, "Explanation for payments")
+ColumnsForPayments = [PaymentID, Date, Amount, Explanation]
+Payments = Table("Payments", ColumnsForPayments, "Payments", PaymentID.get_name())
 
+#BankCat Setup
+BankID = Column("BankID", "INTEGER", True, "Bank ID for bank categories.")
+BankName = Column("BankName", "TEXT", False, "Name of Bank Category")
+CreationDate = Column("CreationDate", "DATE", False, "Date category was created.")
+ColumnsForBankCat = [BankID, BankName, CreationDate]
+BankCat = Table("BankCat", ColumnsForBankCat, "Categories of Bank.", BankID.get_name())
+
+#BankBalance Setup
+BankBalanceID = ForeignIDColumn("BankBalanceID", "INTEGER", True, "Payment ID for bank categories", "BankCat", "BankBalanceID")
+Date = Column("Date", "DATE", False, "Date Bank info was inputed")
+BankBalance = Column("BankBalance", "NUMERIC", False, "Amount in bank.")
+IsCurrent = Column("IsCurrent", "INTEGER", False, "Indicates if balance is current")
+ColumnsForBankBalance = [BankBalanceID, Date, BankBalance, IsCurrent]
+BankBalance = Table("BankBalance", ColumnsForBankBalance, "Bank Balance", BankBalanceID.get_name())
