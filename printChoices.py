@@ -16,12 +16,13 @@ def printChoices(title, request, editableArea, bufferSpace, choices = []):
 
     totalArea = editableArea + bufferSpace
 
-    topAnBottomBorder = '+' + '='*totalArea + '+'
+    topAndBottomBorder = '+' + '='*totalArea + '+'
     fillerLayer = '|' + ' '*totalArea + '|'
 
     titleUnderline = title
     titleLine = addSpaceAndBorders(titleUnderline, editableArea, bufferSpace)
-    linesToPrint = [topAnBottomBorder, fillerLayer, titleLine, fillerLayer]
-    print(linesToPrint)
+    linesToPrint = [topAndBottomBorder, fillerLayer, titleLine, fillerLayer]
+    for line in linesToPrint:
+        print(line)
 
-print(printChoices("", "", 3, 3))
+printChoices("test", "test", 40, 3)
