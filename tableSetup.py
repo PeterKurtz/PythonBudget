@@ -53,3 +53,27 @@ ColumnsForSavingsTotal = [SavingsID, Date, Total]
 SavingsTotal = Table("SavingsTotal", ColumnsForSavingsTotal, "SavingsTotal", SavingsID.get_name())
 
 #SavingsGoal Setup
+SavingsID = ForeignIDColumn("SavingsID", "INTEGER", True, "Savings ID for savings categories", "SavingsCat", "SavingsID")
+GoalAmount = Column("GoalAmount", "NUMERIC", False, "Goal amount")
+Date = Column("Date", "DATE", False, "Date Savings was inputed")
+ColumnsForSavingsGoal = [SavingsID, GoalAmount, Date]
+SavingsGoal = Table("SavingsGoal", ColumnsForSavingsGoal, "Savings Goals", "SavingsID")
+
+#InvestmentCat Setup
+InvestmentID = Column("InvestmentID", "INTEGER", True, "Investment ID")
+CreationDate = Column("CreationDate", "DATE", False, "Date cateegory was created")
+InvestmentName = Column("InvestmentName", "TEXT", False, "Name of category")
+ColumnsForInvestmentCat = [InvestmentID, CreationDate, InvestmentName]
+InvestmentCat = Table("InvestmentCat", ColumnsForInvestmentCat, "Investment Categories", "InvestmentID")
+
+#Investments Setup
+InvestmentID = ForeignIDColumn("InvestmentID", "INTEGER", True, "Investment ID for investment categories", "InvestmentCat", "InvestmentID")
+Date = Column("Date", "DATE", False, "Date Investment was inputed")
+AmountPaid = Column("AmountPaid", "NUMERIC", False, "Amount paid for investments")
+TotalAmount = Column("TotalAmount", "NUMERIC", False, "Total amount for the category")
+Description = Column("Description", "TEXT", False, "Description for the investment")
+ColumnsForInvestments = [InvestmentID, Date, AmountPaid, TotalAmount, Description]
+Investments = Table("Investments", ColumnsForInvestments, "Investment transactions", "InvestmentID")
+
+
+
