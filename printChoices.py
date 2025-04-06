@@ -35,22 +35,17 @@ def createChoices(choices, editableArea, bufferSpace):
     choicesLines = []
 
     for index, oneChoice in enumerate(choices):
-        startOfChoice = True
+
+        oneChoice = f'{index + 1}: {oneChoice}'
 
         while len(oneChoice) > editableArea - 3:
-            if startOfChoice == True:
-                oneChoice = f'{index + 1}: {oneChoice}'
-                startOfChoice = False
 
-            else:
-                oneChoice = f'   {oneChoice}'
-            
-            indexToCheck = findIndex(oneChoice, editableArea)
+            indexToCheck = findIndex(oneChoice, editableArea-3)
             correctChoice = oneChoice[:indexToCheck]
             correctChoice = addSpaceAndBorders(correctChoice, editableArea, bufferSpace)
 
             choicesLines.append(correctChoice)
-            oneChoice = oneChoice[indexToCheck + 1:]
+            oneChoice = f'   {oneChoice[indexToCheck + 1:]}'
 
         oneChoice = addSpaceAndBorders(oneChoice, editableArea, bufferSpace)
 
@@ -86,4 +81,6 @@ def printChoices(title, request, editableArea, bufferSpace, choices = []):
     for line in linesToPrint:
         print(line)
 
-printChoices("test", "test is a test they are the people this is a long test", 20, 3, ["1st choice testing testing testing testing", "2nd Choice", "3rd Choice", "4th Choice"])
+    linesToPrint.append(seperatorLine)
+
+printChoices("test", "test is a test they are the people this is a long test", 40, 3, ["1st choice testing testing testing testing", "2nd Choice", "3rd Choice", "4th Choice"])
