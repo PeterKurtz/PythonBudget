@@ -104,3 +104,5 @@ BankBalance = Column("BankBalance", "NUMERIC", False, "Amount in bank.")
 IsCurrent = Column("IsCurrent", "INTEGER", False, "Indicates if balance is current")
 ColumnsForBankBalance = [BankBalanceID, Date, BankBalance, IsCurrent]
 BankBalance = Table("BankBalance", ColumnsForBankBalance, "Bank Balance", BankBalanceID.get_name())
+
+allTables = [RegularCosts, RegularCostCat, RegularCostBudget, SavingsCat, Savings, SavingsTotal, SavingsGoal, Savings, SavingsTotal, IrregularCosts, InvestmentCat, Payments, Investments, BankBalance, PaymentCat]
