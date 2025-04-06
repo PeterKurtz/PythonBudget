@@ -52,13 +52,11 @@ def createChoices(choices, editableArea, bufferSpace):
             choicesLines.append(correctChoice)
             oneChoice = oneChoice[indexToCheck + 1:]
 
-    oneChoice = addSpaceAndBorders(oneChoice, editableArea, bufferSpace)
+        oneChoice = addSpaceAndBorders(oneChoice, editableArea, bufferSpace)
 
-    choicesLines.append(oneChoice)
+        choicesLines.append(oneChoice)
 
     return choicesLines
-
-print(createChoices(["1st choice", "2nd Choice", "3rd Choice", "4th Choice"], 20, 3))
 
 
 def printChoices(title, request, editableArea, bufferSpace, choices = []):
@@ -88,4 +86,4 @@ def printChoices(title, request, editableArea, bufferSpace, choices = []):
     for line in linesToPrint:
         print(line)
 
-#printChoices("test", "test is a test they are the people this is a long test", 20, 3, ["One Choice", "Second Choice", "Third Choice"])
+printChoices("test", "test is a test they are the people this is a long test", 20, 3, ["1st choice testing testing testing testing", "2nd Choice", "3rd Choice", "4th Choice"])
