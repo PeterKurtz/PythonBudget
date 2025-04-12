@@ -6,6 +6,7 @@ con = sqlite3.connect("budget.db")
 cur = con.cursor()
 
 for table in allTables:
+    print(table.name)
     cur.execute(table.CreateSQLTable())
 
 con.commit()

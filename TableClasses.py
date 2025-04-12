@@ -28,7 +28,8 @@ class ForeignIDColumn(Column):
 
     def createSQLColumnString(self):
 
-        sqlString = f"FOREIGN KEY({self.name}) References {self.foreignTable} ({self.foreignID})"
+        sqlString = f"{self.name} PRIMARY KEY,\n"
+        sqlString = f"{sqlString}FOREIGN KEY({self.name}) REFERENCES {self.foreignTable}({self.foreignID})"
 
         return sqlString
     
@@ -49,7 +50,7 @@ class Table:
                 sqlString = f"{sqlString},"
 
             else:
-                sqlString = f"{sqlString})"
+                sqlString = f"{sqlString});"
 
         return sqlString
         

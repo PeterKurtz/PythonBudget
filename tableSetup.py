@@ -105,4 +105,9 @@ IsCurrent = Column("IsCurrent", "INTEGER", False, "Indicates if balance is curre
 ColumnsForBankBalance = [BankBalanceID, Date, BankBalance, IsCurrent]
 BankBalance = Table("BankBalance", ColumnsForBankBalance, "Bank Balance", BankBalanceID.get_name())
 
-allTables = [RegularCosts, RegularCostCat, RegularCostBudget, SavingsCat, Savings, SavingsTotal, SavingsGoal, Savings, SavingsTotal, IrregularCosts, InvestmentCat, Payments, Investments, BankBalance, PaymentCat]
+#allTables = [RegularCostCat, RegularCosts, RegularCostBudget, SavingsCat, Savings, SavingsTotal, SavingsGoal, Savings, SavingsTotal, IrregularCosts, InvestmentCat, Investments, PaymentCat, Payments, BankCat, BankBalance]
+allTables = [RegularCostCat, RegularCosts]
+
+for table in allTables:
+    print(table.CreateSQLTable())
+    print()
