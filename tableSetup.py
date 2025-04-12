@@ -1,4 +1,4 @@
-from start import *
+from TableClasses import *
 
 #SavingsCat Setup
 SavingsID = Column("SavingsID", "INTEGER", True, "Primary key for SavingsCat. The ID for each savings category.")
