@@ -106,7 +106,6 @@ ColumnsForBankBalance = [BankDate, BankBalance, IsCurrent, BankBalanceID]
 BankBalance = Table("BankBalance", ColumnsForBankBalance, "Bank Balance", BankBalanceID.get_name())
 
 allTables = [RegularCostCat, RegularCosts, RegularCostBudget, SavingsCat, Savings, SavingsTotal, SavingsGoal, IrregularCosts, InvestmentCat, Investments, PaymentCat, Payments, BankCat, BankBalance]
-#allTables = [RegularCostCat, RegularCosts]
 
 for table in allTables:
     print(table.CreateSQLTable())
