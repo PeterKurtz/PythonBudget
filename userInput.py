@@ -13,5 +13,3 @@ def getValidInt(maxNum):
         except:
             print("Incorrect Input")
     return userInputInt
-
-print(getValidInt(3))

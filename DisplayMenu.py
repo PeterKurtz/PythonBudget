@@ -90,6 +90,3 @@ def printChoices(title, request, editableArea, bufferSpace, choices = []):
     for line in linesToPrint:
         print(line)
 
-printChoices("test", "test is a test they are the people this is a long test", 40, 3, ["1st choice testing testing testing testing", "2nd Choice", "3rd Choice", "4th Choice"])
-printChoices("Log Money In/Out", "Select an Action", 40, 3, ["Add money spent on the budget", "Add money spent on savings", "Add money saved", "Add money received", "Add money saved", "Update total in bank", "Set a budget"])
-printChoices("Log Money In/Out", "Choose a budget", 40, 3)
