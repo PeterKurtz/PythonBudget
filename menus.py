@@ -13,27 +13,31 @@ def moneyInOut():
 def createBudget():
     print("Went to createBudget")
 
-def getNextID(table, idName):
+def getNextID(table):
 
     con = sqlite3.connect("budget.db")
     cur = con.cursor()
-    cur = sqlite3.connect("budget.db")
 
-    res = cur.execute(f"SELECT MAX {idName} FROM {table}")
+    sqlMaxString = f"SELECT MAX({table.get_idColumnName()}) FROM {table.get_name()}"
 
-    if len(res) != 0:
+    result = cur.execute(sqlMaxString).fetchall()
+
+    con.close()
+
+    if result[0][0] == None:
         return 1
-    
-    results = res.fetchall()[0]
 
-    if len(results) != 1:
+    if len(result) != 1:
         print("This is an error that should never happen.")
 
-    maxID = results[0]
+    maxID = result[0]
+    print(maxID)
     maxIDInt = int(maxID)
     nextID = maxIDInt + 1
 
     return nextID
+
+#getNextID(SavingsCat)
 
 def insertCategory(table, title):
     fullTitle = f"{title} Category"
@@ -47,10 +51,26 @@ def insertCategory(table, title):
         return catName
     
     else:
-        insertStatement = table.createInsertStatement()
-        #nextID = getNextID(table, table.get_idColumnName())
+        insertStatement = table.createInsertString()
 
+        nextID = getNextID(table)
         dateCreated = date.today()
+
+        con = sqlite3.connect("budget.db")
+        cur = con.cursor()
+
+        data = [nextID, catName, dateCreated]
+
+        cur.execute(insertStatement, data)
+
+        con.commit()
+        con.close()
+
+        print("Made it here")
+
+        return "not finished"
+
+
 
 
 def createCategory():

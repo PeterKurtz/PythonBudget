@@ -40,8 +40,11 @@ class Table:
         self.description = description
         self.idColumnName = idColumnName
 
-    def get_idCOlumnName(self):
-        return self.idCOlumnName
+    def get_idColumnName(self):
+        return self.idColumnName
+    
+    def get_name(self):
+        return self.name
 
     def CreateSQLTable(self):
 
