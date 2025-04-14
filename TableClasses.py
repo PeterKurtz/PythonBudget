@@ -40,6 +40,9 @@ class Table:
         self.description = description
         self.idColumnName = idColumnName
 
+    def get_idCOlumnName(self):
+        return self.idCOlumnName
+
     def CreateSQLTable(self):
 
         sqlString = f"CREATE TABLE {self.name} ("
