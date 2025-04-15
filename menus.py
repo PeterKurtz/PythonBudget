@@ -10,8 +10,41 @@ bufferZone = 3
 def moneyInOut():
     print("Went to moneyInOut")
 
+def getTableChoices(table, catName):
+    con = sqlite3.connect("budget.db")
+    cur = con.cursor()
+
+    sqlString = f"SELECT {catName} FROM {table.get_name()}"
+
+    result = cur.execute(sqlString).fetchall()
+    categories = []
+    for cat in result:
+        categories.append(cat[0])
+    #Eventually put in code to check if anything is there, for now we will assume category stuff has been set up
+
+    con.close()
+
+    return categories
+
+
+def chooseCategory(table, catName, title, description):
+    choices = getTableChoices(table, catName)
+
+    printChoices(title, description, editableArea, bufferZone, choices)
+
+    userInput = getValidInt(len(choices))
+
+    if userInput == 'b':
+        return userInput
+    
+    catToBudget = choices[userInput]
+
+    return catToBudget
+
+
 def createBudget():
-    print("Went to createBudget")
+    dataToInsert = []
+    listOfMethods = [chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?")]
 
 def getNextID(table):
 
@@ -30,8 +63,7 @@ def getNextID(table):
     if len(result) != 1:
         print("This is an error that should never happen.")
 
-    maxID = result[0]
-    print(maxID)
+    maxID = result[0][0]
     maxIDInt = int(maxID)
     nextID = maxIDInt + 1
 
@@ -65,8 +97,6 @@ def insertCategory(table, title):
 
         con.commit()
         con.close()
-
-        print("Made it here")
 
         return "not finished"
 
