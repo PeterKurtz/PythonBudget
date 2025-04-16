@@ -4,7 +4,7 @@ from tableSetup import *
 from datetime import date
 import sqlite3
 
-editableArea = 30
+editableArea = 40
 bufferZone = 3
 
 def moneyInOut():
@@ -37,14 +37,17 @@ def chooseCategory(table, catName, title, description):
     if userInput == 'b':
         return userInput
     
-    catToBudget = choices[userInput]
+    catToBudget = choices[userInput - 1]
 
     return catToBudget
 
 
 def createBudget():
     dataToInsert = []
-    listOfMethods = [chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?")]
+    listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?")]
+
+    listOfMethods[0]()
+
 
 def getNextID(table):
 
@@ -132,23 +135,23 @@ def createCategory():
 
 
 def mainMenu():
-    choices = ["Log money in/out", "Set a budget", "Create a category"]
-    printChoices("Main Menu", "Choose an Action", editableArea, bufferZone, choices)
-    
-    userInput = getValidInt(len(choices))
 
-    if userInput == 1:
-        moneyInOut()
+    while True:
+        choices = ["Log money in/out", "Set a budget", "Create a category"]
+        printChoices("Main Menu", "Choose an Action", editableArea, bufferZone, choices)
+        
+        userInput = getValidInt(len(choices))
 
-    elif userInput == 2:
-        createBudget()
+        if userInput == 1:
+            moneyInOut()
 
-    elif userInput == 3:
-        createCategory()
+        elif userInput == 2:
+            createBudget()
 
-    elif userInput == 'b':
-        return
+        elif userInput == 3:
+            createCategory()
 
-
+        elif userInput == 'b':
+            return
 
 mainMenu()
