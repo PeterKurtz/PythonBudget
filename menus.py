@@ -74,34 +74,46 @@ def getNextID(table):
 
 #getNextID(SavingsCat)
 
+def showCategories(table):
+    title = f"Categories for:"
+    request = table.get_name()
+    choices = getTableChoices(table, table.columnArray[1].get_name())
+    printChoices(title, request, editableArea, bufferZone, choices)
+    input()
+
 def insertCategory(table, title):
     fullTitle = f"{title} Category"
 
-    request = "What is the name of the new category?"
-    printChoices(fullTitle, request, editableArea, bufferZone)
+    while True:
 
-    catName = input()
+        request = "What is the name of the new category? Select s if you would like to see the current categories."
+        printChoices(fullTitle, request, editableArea, bufferZone)
 
-    if catName == 'b':
-        return catName
-    
-    else:
-        insertStatement = table.createInsertString()
+        catName = input()
 
-        nextID = getNextID(table)
-        dateCreated = date.today()
+        if catName == 'b':
+            return catName
+        
+        elif catName == 's':
+            showCategories(table)
+        
+        else:
+            insertStatement = table.createInsertString()
 
-        con = sqlite3.connect("budget.db")
-        cur = con.cursor()
+            nextID = getNextID(table)
+            dateCreated = date.today()
 
-        data = [nextID, catName, dateCreated]
+            con = sqlite3.connect("budget.db")
+            cur = con.cursor()
 
-        cur.execute(insertStatement, data)
+            data = [nextID, catName, dateCreated]
 
-        con.commit()
-        con.close()
+            cur.execute(insertStatement, data)
 
-        return "not finished"
+            con.commit()
+            con.close()
+
+            return "not finished"
 
 
 
