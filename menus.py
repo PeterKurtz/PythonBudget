@@ -41,12 +41,48 @@ def chooseCategory(table, catName, title, description):
 
     return catToBudget
 
+def printAndGetInt(title, description, maxNum):
+    printChoices(title, description, editableArea, bufferZone)
+
+    userInt = getValidInt(maxNum)
+
+    return userInt
+
+def printAndGetFloat(title, description, maxNum):
+    printChoices(title, description, editableArea, bufferZone)
+
+    userInt = getValidFloat(maxNum)
+
+    return userInt
+
+def chooseAmount(title, description):
+    printChoices(title, description, editableArea, bufferZone)
+    amount = input()
+    return amount
 
 def createBudget():
     dataToInsert = []
-    listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?")]
+    listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?"),
+                     lambda: printAndGetInt("Date", "What year do you want to set?", 2100),
+                     lambda: printAndGetInt("Date", "What month do you want to set?", 12),
+                     lambda: printAndGetFloat("Amount", "How much do you want to set?", 0)]
 
-    listOfMethods[0]()
+    indexOfMethods = 0
+
+    lastMethodIndex = len(listOfMethods) - 1
+    
+    while indexOfMethods <= lastMethodIndex:
+        userInput = listOfMethods[indexOfMethods]()
+
+        if userInput == 'b' and indexOfMethods == 0:
+            return
+        elif userInput == 'b' and indexOfMethods > 0:
+            indexOfMethods = indexOfMethods - 1
+            dataToInsert = dataToInsert[:indexOfMethods]
+        else:
+            dataToInsert.append(userInput)
+            indexOfMethods += 1
+    print(dataToInsert)
 
 
 def getNextID(table):
@@ -115,23 +151,18 @@ def insertCategory(table, title):
 
             return "not finished"
 
-
-
-
 def createCategory():
     tables = [SavingsCat, RegularCostCat, InvestmentCat, PaymentCat, BankCat]
     choices = ["Add a Savings Category", "Add a budget category", "Add an investment category", "Add a money received category", "Add a bank category"]
     titles = ["Savings", "Budget", "Investment", "Money Received", "Bank"]
 
-    continueChoosing = True
-
-    while continueChoosing:
+    while True:
         printChoices("Create a Category", "Choose an action", editableArea, bufferZone, choices)
 
         userInput = getValidInt(len(choices))
 
         if userInput == 'b':
-            continueChoosing = False
+            return
 
         else:
             table = tables[userInput - 1]
@@ -143,7 +174,7 @@ def createCategory():
                 continue
 
             else:
-                continueChoosing = False
+                return
 
 
 def mainMenu():
