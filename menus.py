@@ -26,6 +26,19 @@ def getTableChoices(table, catName):
 
     return categories
 
+def getCatID(table, catName):
+    con = sqlite3.connect("budget.db")
+    cur = con.cursor()
+
+    sqlString = f"SELECT {table.get_idColumnName()} FROM {table.get_name()} WHERE CostCatName = \"{catName}\""
+
+    result = cur.execute(sqlString).fetchall()
+
+    id = result[0][0]
+
+    idInt = int(id)
+
+    return idInt
 
 def chooseCategory(table, catName, title, description):
     choices = getTableChoices(table, catName)
@@ -39,7 +52,9 @@ def chooseCategory(table, catName, title, description):
     
     catToBudget = choices[userInput - 1]
 
-    return catToBudget
+    catIDToBudget = getCatID(RegularCostCat, catToBudget)
+
+    return catIDToBudget
 
 def printAndGetInt(title, description, maxNum):
     printChoices(title, description, editableArea, bufferZone)
@@ -48,24 +63,19 @@ def printAndGetInt(title, description, maxNum):
 
     return userInt
 
-def printAndGetFloat(title, description, maxNum):
+def printAndGetFloat(title, description):
     printChoices(title, description, editableArea, bufferZone)
 
-    userInt = getValidFloat(maxNum)
+    userInt = getValidFloat()
 
     return userInt
-
-def chooseAmount(title, description):
-    printChoices(title, description, editableArea, bufferZone)
-    amount = input()
-    return amount
 
 def createBudget():
     dataToInsert = []
     listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?"),
                      lambda: printAndGetInt("Date", "What year do you want to set?", 2100),
                      lambda: printAndGetInt("Date", "What month do you want to set?", 12),
-                     lambda: printAndGetFloat("Amount", "How much do you want to set?", 0)]
+                     lambda: printAndGetFloat("Amount", "How much do you want to set?")]
 
     indexOfMethods = 0
 
@@ -82,8 +92,18 @@ def createBudget():
         else:
             dataToInsert.append(userInput)
             indexOfMethods += 1
-    print(dataToInsert)
+    
+    sqlInsert = RegularCostBudget.createInsertString()
+    
+    reorgDataToInsert = [dataToInsert[1], dataToInsert[2], dataToInsert[3], dataToInsert[0]]
 
+    con = sqlite3.connect("budget.db")
+    cur = con.cursor()
+
+    cur.execute(sqlInsert, reorgDataToInsert)
+
+    con.commit()
+    con.close()
 
 def getNextID(table):
 

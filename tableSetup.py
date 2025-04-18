@@ -11,7 +11,7 @@ SavingsCat = Table("SavingsCat", ColumnsForSavingCat, "Categories of savings.", 
 CostDate = Column("CostDate", "DATE", False, "Date when created")
 Amount = Column("Amount", "INTEGER", False, "Amount for Irregular Costs")
 Description = Column("Description", "TEXT", False, "Description of Costs")
-SavingsID = ForeignIDColumn("SavingsID", "INTEGER", True, "Savings ID for Irregular Costs", "SavingsCat", "SavingsID")
+SavingsID = ForeignIDColumn("SavingsID", "INTEGER", False, "Savings ID for Irregular Costs", "SavingsCat", "SavingsID")
 ColumnsForIrregularCosts = [CostDate, Amount, Description, SavingsID]
 IrregularCosts = Table("IrregularCosts", ColumnsForIrregularCosts, "All irregular costs used. Money that takes from savings", SavingsID.get_name())
 
@@ -26,36 +26,37 @@ RegularCostCat = Table("RegularCostCat", ColumnsForRegularCostCat, "All regular 
 CostDate = Column("CostDate", "DATE", False, "Date cost was done")
 Amount = Column("Amount", "NUMERIC", False, "Amount spent")
 Explanation = Column("Explanation", "TEXT", False, "Explanation for transaction")
-CostID = ForeignIDColumn("CostID", "INTEGER", True, "Cost ID for Regular Costs", "RegularCostCat", "CostID")
+CostID = ForeignIDColumn("CostID", "INTEGER", False, "Cost ID for Regular Costs", "RegularCostCat", "CostID")
 ColumnsForRegularCosts = [Amount, Explanation, CostDate, CostID]
 RegularCosts = Table("RegularCosts", ColumnsForRegularCosts, "All regular cost transactions", CostID.get_name())
 
 #RegularCostBudget Setup
-CostDate = Column("CostDate", "DATE", False, "Date cost was done")
+CostYear = Column("CostYear", "INTEGER", False, "Year of budget")
+CostMonth = Column("CostMonth", "INTEGER", False, "Month of budget")
 Amount = Column("Amount", "NUMERIC", False, "Amount spent")
-CostID = ForeignIDColumn("CostID", "INTEGER", True, "Cost ID for Regular Costs", "RegularCostCat", "CostID")
-ColumnsForRegularCostBudget = [CostDate, Amount, CostID]
+CostID = ForeignIDColumn("CostID", "INTEGER", False, "Cost ID for Regular Costs", "RegularCostCat", "CostID")
+ColumnsForRegularCostBudget = [CostYear, CostMonth, Amount, CostID]
 RegularCostBudget = Table("RegularCostBudget", ColumnsForRegularCostBudget, "Budget for Regular Costs", CostID.get_name())
 
 #Savings Setup
 SavingsDate = Column("SavingsDate", "DATE", False, "Date Savings was inputed")
 Amount = Column("Amount", "NUMERIC", False, "Amount saved")
 Explanation = Column("Explanation", "TEXT", False, "Explanation for savings")
-SavingsID = ForeignIDColumn("SavingsID", "INTEGER", True, "Savings ID for savings categories", "SavingsCat", "SavingsID")
+SavingsID = ForeignIDColumn("SavingsID", "INTEGER", False, "Savings ID for savings categories", "SavingsCat", "SavingsID")
 ColumnsForSavings = [SavingsDate, Amount, Explanation, SavingsID]
 Savings = Table("Savings", ColumnsForSavings, "Savings", SavingsID.get_name())
 
 #SavingsTotal Setup
 SavingsDate = Column("SavingsDate", "DATE", False, "Date Savings was inputed")
 Total = Column("Total", "NUMERIC", False, "Total for Savings Category")
-SavingsID = ForeignIDColumn("SavingsID", "INTEGER", True, "Savings ID for savings categories", "SavingsCat", "SavingsID")
+SavingsID = ForeignIDColumn("SavingsID", "INTEGER", False, "Savings ID for savings categories", "SavingsCat", "SavingsID")
 ColumnsForSavingsTotal = [SavingsDate, Total, SavingsID]
 SavingsTotal = Table("SavingsTotal", ColumnsForSavingsTotal, "SavingsTotal", SavingsID.get_name())
 
 #SavingsGoal Setup
 GoalAmount = Column("GoalAmount", "NUMERIC", False, "Goal amount")
 SavingsDate = Column("SavingsDate", "DATE", False, "Date Savings was inputed")
-SavingsID = ForeignIDColumn("SavingsID", "INTEGER", True, "Savings ID for savings categories", "SavingsCat", "SavingsID")
+SavingsID = ForeignIDColumn("SavingsID", "INTEGER", False, "Savings ID for savings categories", "SavingsCat", "SavingsID")
 ColumnsForSavingsGoal = [GoalAmount, SavingsDate, SavingsID]
 SavingsGoal = Table("SavingsGoal", ColumnsForSavingsGoal, "Savings Goals", "SavingsID")
 
@@ -71,7 +72,7 @@ InvestmentDate = Column("InvestmentDate", "DATE", False, "Date Investment was in
 AmountPaid = Column("AmountPaid", "NUMERIC", False, "Amount paid for investments")
 TotalAmount = Column("TotalAmount", "NUMERIC", False, "Total amount for the category")
 Description = Column("Description", "TEXT", False, "Description for the investment")
-InvestmentID = ForeignIDColumn("InvestmentID", "INTEGER", True, "Investment ID for investment categories", "InvestmentCat", "InvestmentID")
+InvestmentID = ForeignIDColumn("InvestmentID", "INTEGER", False, "Investment ID for investment categories", "InvestmentCat", "InvestmentID")
 ColumnsForInvestments = [InvestmentDate, AmountPaid, TotalAmount, Description, InvestmentID]
 Investments = Table("Investments", ColumnsForInvestments, "Investment transactions", "InvestmentID")
 
@@ -86,7 +87,7 @@ PaymentCat = Table("PaymentCat", ColumnsForPaymentCat, "Categories of Payments."
 PaymentDate = Column("PaymentDate", "DATE", False, "Date Payment was inputed")
 Amount = Column("Amount", "NUMERIC", False, "Amount paid")
 Explanation = Column("Explanation", "TEXT", False, "Explanation for payments")
-PaymentID = ForeignIDColumn("PaymentID", "INTEGER", True, "Payment ID for payment categories", "PaymentCat", "PaymentID")
+PaymentID = ForeignIDColumn("PaymentID", "INTEGER", False, "Payment ID for payment categories", "PaymentCat", "PaymentID")
 ColumnsForPayments = [PaymentDate, Amount, Explanation, PaymentID]
 Payments = Table("Payments", ColumnsForPayments, "Payments", PaymentID.get_name())
 
@@ -101,12 +102,12 @@ BankCat = Table("BankCat", ColumnsForBankCat, "Categories of Bank.", BankID.get_
 BankDate = Column("BankDate", "DATE", False, "Date Bank info was inputed")
 BankBalance = Column("BankBalance", "NUMERIC", False, "Amount in bank.")
 IsCurrent = Column("IsCurrent", "INTEGER", False, "Indicates if balance is current")
-BankBalanceID = ForeignIDColumn("BankBalanceID", "INTEGER", True, "Payment ID for bank categories", "BankCat", "BankBalanceID")
+BankBalanceID = ForeignIDColumn("BankBalanceID", "INTEGER", False, "Payment ID for bank categories", "BankCat", "BankBalanceID")
 ColumnsForBankBalance = [BankDate, BankBalance, IsCurrent, BankBalanceID]
 BankBalance = Table("BankBalance", ColumnsForBankBalance, "Bank Balance", BankBalanceID.get_name())
 
 allTables = [RegularCostCat, RegularCosts, RegularCostBudget, SavingsCat, Savings, SavingsTotal, SavingsGoal, IrregularCosts, InvestmentCat, Investments, PaymentCat, Payments, BankCat, BankBalance]
 
-#for table in allTables:
-#    print(table.CreateSQLTable())
-#    print()
+for table in allTables:
+    print(table.CreateSQLTable())
+    print()

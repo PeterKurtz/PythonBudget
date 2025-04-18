@@ -14,7 +14,7 @@ def getValidInt(maxNum):
             print("Incorrect Input")
     return userInputInt
 
-def getValidFloat(maxNum):
+def getValidFloat():
     continueLoop = True
     while continueLoop:
         try:
@@ -22,7 +22,7 @@ def getValidFloat(maxNum):
             if userInput == 'b':
                 return userInput
             userInputInt = float(userInput)
-            if 0 <= userInputInt <= maxNum:
+            if 0 <= userInputInt:
                 continueLoop = False
             else:
                 raise

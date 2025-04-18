@@ -28,7 +28,7 @@ class ForeignIDColumn(Column):
 
     def createSQLColumnString(self):
 
-        sqlString = f"{self.name} PRIMARY KEY,\n"
+        sqlString = f"{self.name},\n"
         sqlString = f"{sqlString}FOREIGN KEY({self.name}) REFERENCES {self.foreignTable}({self.foreignID})"
 
         return sqlString
