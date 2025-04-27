@@ -76,6 +76,8 @@ class Table:
             for fColumn in enumerate(foreignColumns):
                 sqlString += fColumn.createForeignColumnString()
 
+        sqlString += ")"
+
         return sqlString
         
     def createInsertString(self):
