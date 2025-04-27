@@ -25,7 +25,7 @@ class ForeignIDColumn(Column):
 
     def createForeignColumnString(self):
 
-        sqlString = f"FOREIGN KEY({self.name}) REFERENCES {self.foreignTable}({self.foreignID})\n"
+        sqlString = f"FOREIGN KEY({self.name}) REFERENCES {self.foreignTable}({self.foreignID})"
 
         return sqlString
     
@@ -62,19 +62,24 @@ class Table:
 
             if column.isPrimary:
                 primaryColumns.append(column)
-            if column.__class__.__name__ == ForeignIDColumn:
+            if column.__class__.__name__ == "ForeignIDColumn":
                 foreignColumns.append(column)
+        
+        sqlString += "\n"
 
         if len(primaryColumns) > 0:
-            sqlString += "\nPRIMARY KEY("
+            sqlString += "PRIMARY KEY("
 
             for index, pColumn in enumerate(primaryColumns):
                 sqlString += pColumn.get_name()
                 sqlString = self.addCPChars(index, len(primaryColumns) - 1, sqlString)
 
         if len(foreignColumns) > 0:
-            for fColumn in enumerate(foreignColumns):
+            for fColumn in foreignColumns:
                 sqlString += fColumn.createForeignColumnString()
+
+
+
 
         sqlString += ")"
 
