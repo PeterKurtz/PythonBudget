@@ -7,9 +7,6 @@ class Column:
 
     def createSQLColumnString(self):
         sqlString = f"{self.name} {self.type}"
-        
-        if self.isPrimary:
-            sqlString = f"{sqlString} PRIMARY KEY"
 
         return sqlString
     
@@ -26,10 +23,9 @@ class ForeignIDColumn(Column):
         self.foreignTable = foreignTable
         self.foreignID = foreignID
 
-    def createSQLColumnString(self):
+    def createForeignColumnString(self):
 
-        sqlString = f"{self.name},\n"
-        sqlString = f"{sqlString}FOREIGN KEY({self.name}) REFERENCES {self.foreignTable}({self.foreignID})"
+        sqlString = f"FOREIGN KEY({self.name}) REFERENCES {self.foreignTable}({self.foreignID})\n"
 
         return sqlString
     
@@ -45,18 +41,40 @@ class Table:
     
     def get_name(self):
         return self.name
+    
+    def addCPChars(self, index, max, sqlString):
+        if index != max:
+            sqlString += ", "
+        else:
+            sqlString += ")"
+        return sqlString
 
     def CreateSQLTable(self):
+
+        primaryColumns = []
+        foreignColumns = []
 
         sqlString = f"CREATE TABLE {self.name} ("
     
         for index, column in enumerate(self.columnArray):
             sqlString = f"{sqlString}\n{column.createSQLColumnString()}"
-            if index != len(self.columnArray) - 1:
-                sqlString = f"{sqlString},"
+            sqlString += ", "
 
-            else:
-                sqlString = f"{sqlString});"
+            if column.isPrimary:
+                primaryColumns.append(column)
+            if column.__class__.__name__ == ForeignIDColumn:
+                foreignColumns.append(column)
+
+        if len(primaryColumns) > 0:
+            sqlString += "\nPRIMARY KEY("
+
+            for index, pColumn in enumerate(primaryColumns):
+                sqlString += pColumn.get_name()
+                sqlString = self.addCPChars(index, len(primaryColumns) - 1, sqlString)
+
+        if len(foreignColumns) > 0:
+            for fColumn in enumerate(foreignColumns):
+                sqlString += fColumn.createForeignColumnString()
 
         return sqlString
         

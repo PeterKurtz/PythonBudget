@@ -111,3 +111,5 @@ allTables = [RegularCostCat, RegularCosts, RegularCostBudget, SavingsCat, Saving
 for table in allTables:
     print(table.CreateSQLTable())
     print()
+
+#print(BankCat.CreateSQLTable())
