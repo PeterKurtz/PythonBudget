@@ -2,6 +2,7 @@ from DisplayMenu import *
 from userInput import *
 from tableSetup import *
 from datetime import date
+from menuFunctions import *
 import sqlite3
 
 editableArea = 40
@@ -9,66 +10,6 @@ bufferZone = 3
 
 def moneyInOut():
     print("Went to moneyInOut")
-
-def getTableChoices(table, catName):
-    con = sqlite3.connect("budget.db")
-    cur = con.cursor()
-
-    sqlString = f"SELECT {catName} FROM {table.get_name()}"
-
-    result = cur.execute(sqlString).fetchall()
-    categories = []
-    for cat in result:
-        categories.append(cat[0])
-    #Eventually put in code to check if anything is there, for now we will assume category stuff has been set up
-
-    con.close()
-
-    return categories
-
-def getCatID(table, catName):
-    con = sqlite3.connect("budget.db")
-    cur = con.cursor()
-
-    sqlString = f"SELECT {table.get_idColumnName()} FROM {table.get_name()} WHERE CostCatName = \"{catName}\""
-
-    result = cur.execute(sqlString).fetchall()
-
-    id = result[0][0]
-
-    idInt = int(id)
-
-    return idInt
-
-def chooseCategory(table, catName, title, description):
-    choices = getTableChoices(table, catName)
-
-    printChoices(title, description, editableArea, bufferZone, choices)
-
-    userInput = getValidInt(len(choices))
-
-    if userInput == 'b':
-        return userInput
-    
-    catToBudget = choices[userInput - 1]
-
-    catIDToBudget = getCatID(RegularCostCat, catToBudget)
-
-    return catIDToBudget
-
-def printAndGetInt(title, description, maxNum):
-    printChoices(title, description, editableArea, bufferZone)
-
-    userInt = getValidInt(maxNum)
-
-    return userInt
-
-def printAndGetFloat(title, description):
-    printChoices(title, description, editableArea, bufferZone)
-
-    userInt = getValidFloat()
-
-    return userInt
 
 def createBudget():
     listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?"),
@@ -78,71 +19,6 @@ def createBudget():
     
     processData(listOfMethods, RegularCostBudget)
 
-def getNextID(table):
-
-    con = sqlite3.connect("budget.db")
-    cur = con.cursor()
-
-    sqlMaxString = f"SELECT MAX({table.get_idColumnName()}) FROM {table.get_name()}"
-
-    result = cur.execute(sqlMaxString).fetchall()
-
-    con.close()
-
-    if result[0][0] == None:
-        return 1
-
-    if len(result) != 1:
-        print("This is an error that should never happen.")
-
-    maxID = result[0][0]
-    maxIDInt = int(maxID)
-    nextID = maxIDInt + 1
-
-    return nextID
-
-#getNextID(SavingsCat)
-
-def showCategories(table):
-    title = f"Categories for:"
-    request = table.get_name()
-    choices = getTableChoices(table, table.columnArray[1].get_name())
-    printChoices(title, request, editableArea, bufferZone, choices)
-    input()
-
-def insertCategory(table, title):
-    fullTitle = f"{title} Category"
-
-    while True:
-
-        request = "What is the name of the new category? Select s if you would like to see the current categories."
-        printChoices(fullTitle, request, editableArea, bufferZone)
-
-        catName = input()
-
-        if catName == 'b':
-            return catName
-        
-        elif catName == 's':
-            showCategories(table)
-        
-        else:
-            insertStatement = table.createInsertString()
-
-            nextID = getNextID(table)
-            dateCreated = date.today()
-
-            con = sqlite3.connect("budget.db")
-            cur = con.cursor()
-
-            data = [nextID, catName, dateCreated]
-
-            cur.execute(insertStatement, data)
-
-            con.commit()
-            con.close()
-
-            return "not finished"
 
 def createCategory():
     tables = [SavingsCat, RegularCostCat, InvestmentCat, PaymentCat, BankCat]
@@ -169,44 +45,6 @@ def createCategory():
             else:
                 return
 
-def collectData(listOfMethods):
-
-    dataToInsert = []
-    indexOfMethods = 0
-    lastMethodIndex = len(listOfMethods) - 1
-
-    while indexOfMethods <= lastMethodIndex:
-        userInput = listOfMethods[indexOfMethods]()
-        if userInput == 'b' and indexOfMethods == 0:
-            return dataToInsert
-        elif userInput == 'b' and indexOfMethods > 0:
-            indexOfMethods -= 1
-            dataToInsert = dataToInsert[:indexOfMethods]
-        else:
-            dataToInsert.append(userInput)
-            indexOfMethods += 1
-
-    return dataToInsert
-
-def insertData(insertString, data):
-
-    con = sqlite3.connect("budget.db")
-    cur = con.cursor()
-
-    cur.execute(insertString, data)
-    con.commit()
-
-    con.close()
-
-def processData(listOfMethods, table):
-    dataToInsert = collectData(listOfMethods)
-
-    if len(dataToInsert) == 0:
-        return
-
-    sqlInsert = table.createInsertString()
-    insertData(sqlInsert, dataToInsert)
-
 def mainMenu():
 
     choices = ["Log money in/out", "Set a budget", "Create a category"]
@@ -222,6 +60,6 @@ def mainMenu():
         if userInput == 'b':
             return
         
-        methodsToChoose[userInput]()
+        methodsToChoose[userInput - 1]()
 
 mainMenu()
