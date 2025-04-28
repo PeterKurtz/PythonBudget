@@ -78,9 +78,6 @@ class Table:
             for fColumn in foreignColumns:
                 sqlString += fColumn.createForeignColumnString()
 
-
-
-
         sqlString += ")"
 
         return sqlString
