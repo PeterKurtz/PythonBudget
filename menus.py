@@ -71,39 +71,12 @@ def printAndGetFloat(title, description):
     return userInt
 
 def createBudget():
-    dataToInsert = []
     listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?"),
                      lambda: printAndGetInt("Date", "What year do you want to set?", 2100),
                      lambda: printAndGetInt("Date", "What month do you want to set?", 12),
                      lambda: printAndGetFloat("Amount", "How much do you want to set?")]
-
-    indexOfMethods = 0
-
-    lastMethodIndex = len(listOfMethods) - 1
     
-    while indexOfMethods <= lastMethodIndex:
-        userInput = listOfMethods[indexOfMethods]()
-
-        if userInput == 'b' and indexOfMethods == 0:
-            return
-        elif userInput == 'b' and indexOfMethods > 0:
-            indexOfMethods = indexOfMethods - 1
-            dataToInsert = dataToInsert[:indexOfMethods]
-        else:
-            dataToInsert.append(userInput)
-            indexOfMethods += 1
-    
-    sqlInsert = RegularCostBudget.createInsertString()
-    
-    reorgDataToInsert = [dataToInsert[1], dataToInsert[2], dataToInsert[3], dataToInsert[0]]
-
-    con = sqlite3.connect("budget.db")
-    cur = con.cursor()
-
-    cur.execute(sqlInsert, reorgDataToInsert)
-
-    con.commit()
-    con.close()
+    processData(listOfMethods, RegularCostBudget)
 
 def getNextID(table):
 
@@ -196,25 +169,59 @@ def createCategory():
             else:
                 return
 
+def collectData(listOfMethods):
+
+    dataToInsert = []
+    indexOfMethods = 0
+    lastMethodIndex = len(listOfMethods) - 1
+
+    while indexOfMethods <= lastMethodIndex:
+        userInput = listOfMethods[indexOfMethods]()
+        if userInput == 'b' and indexOfMethods == 0:
+            return dataToInsert
+        elif userInput == 'b' and indexOfMethods > 0:
+            indexOfMethods -= 1
+            dataToInsert = dataToInsert[:indexOfMethods]
+        else:
+            dataToInsert.append(userInput)
+            indexOfMethods += 1
+
+    return dataToInsert
+
+def insertData(insertString, data):
+
+    con = sqlite3.connect("budget.db")
+    cur = con.cursor()
+
+    cur.execute(insertString, data)
+    con.commit()
+
+    con.close()
+
+def processData(listOfMethods, table):
+    dataToInsert = collectData(listOfMethods)
+
+    if len(dataToInsert) == 0:
+        return
+
+    sqlInsert = table.createInsertString()
+    insertData(sqlInsert, dataToInsert)
 
 def mainMenu():
 
+    choices = ["Log money in/out", "Set a budget", "Create a category"]
+    methodsToChoose = [lambda: moneyInOut(),
+                       lambda: createBudget(),
+                       lambda: createCategory()]
+
     while True:
-        choices = ["Log money in/out", "Set a budget", "Create a category"]
         printChoices("Main Menu", "Choose an Action", editableArea, bufferZone, choices)
         
         userInput = getValidInt(len(choices))
 
-        if userInput == 1:
-            moneyInOut()
-
-        elif userInput == 2:
-            createBudget()
-
-        elif userInput == 3:
-            createCategory()
-
-        elif userInput == 'b':
+        if userInput == 'b':
             return
+        
+        methodsToChoose[userInput]()
 
 mainMenu()
