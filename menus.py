@@ -3,19 +3,25 @@ from userInput import *
 from tableSetup import *
 from menuFunctions import *
 
-editableArea = 40
-bufferZone = 3
-
 def moneyInOut():
     print("Went to moneyInOut")
 
 def createBudget():
-    listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", "Set a Budget", "What budget category do you want to set?"),
-                     lambda: printAndGetInt("Date", "What year do you want to set?", 2100),
-                     lambda: printAndGetInt("Date", "What month do you want to set?", 12),
+    title = "Set a Budget"
+    listOfMethods = [lambda: chooseCategory(RegularCostCat, "CostCatName", title, "What budget category do you want to set?"),
+                     lambda: printAndGetInt(title, "What year do you want to set?", 2100),
+                     lambda: printAndGetInt(title, "What month do you want to set?", 12),
                      lambda: printAndGetFloat("Amount", "How much do you want to set?")]
     
     processData(listOfMethods, RegularCostBudget)
+
+def setGoal():
+    title = "Set a Savings Goal"
+    listOfMethods = [lambda: chooseCategory(SavingsCat, "SavingsCatName", title, "What savings category do you want to set?"),
+                     lambda: printAndGetDate(title, "What date do you want the goal to be set for?"),
+                     lambda: printAndGetFloat("Amount", "How much do you want to set?")]
+    
+    processData(listOfMethods, SavingsGoal)
 
 
 def createCategory():
@@ -24,7 +30,7 @@ def createCategory():
     titles = ["Savings", "Budget", "Investment", "Money Received", "Bank"]
 
     while True:
-        printChoices("Create a Category", "Choose an action", editableArea, bufferZone, choices)
+        printMenu("Create a Category", "Choose an action", choices)
 
         userInput = getValidInt(len(choices))
 
@@ -45,13 +51,14 @@ def createCategory():
 
 def mainMenu():
 
-    choices = ["Log money in/out", "Set a budget", "Create a category"]
+    choices = ["Log money in/out", "Set a budget", "Create a category", "Set a savings goal"]
     methodsToChoose = [lambda: moneyInOut(),
                        lambda: createBudget(),
-                       lambda: createCategory()]
+                       lambda: createCategory(),
+                       lambda: setGoal()]
 
     while True:
-        printChoices("Main Menu", "Choose an Action", editableArea, bufferZone, choices)
+        printMenu("Main Menu", "Choose an Action", choices)
         
         userInput = getValidInt(len(choices))
 

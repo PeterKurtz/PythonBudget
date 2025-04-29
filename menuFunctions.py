@@ -19,7 +19,7 @@ def chooseCategory(table, catName, title, description):
     
     catToBudget = choices[userInput - 1]
 
-    catIDToBudget = getCatID(RegularCostCat, catToBudget)
+    catIDToBudget = getCatID(table, catName, catToBudget)
 
     return catIDToBudget
 
@@ -36,6 +36,14 @@ def printAndGetFloat(title, description):
     userInt = getValidFloat()
 
     return userInt
+
+##################### Need to work on this
+def printAndGetDate(title, description):
+    printChoices(title, description, editableArea, bufferZone)
+
+    userDate = input()
+
+    return userDate
 
 def showCategories(table):
     title = f"Categories for:"
@@ -115,3 +123,6 @@ def processData(listOfMethods, table):
 
     sqlInsert = table.createInsertString()
     insertData(sqlInsert, dataToInsert)
+
+def printMenu(title, request, choices):
+    printChoices(title, request, editableArea, bufferZone, choices)

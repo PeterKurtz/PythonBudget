@@ -16,11 +16,12 @@ def getTableChoices(table, catName):
 
     return categories
 
-def getCatID(table, catName):
+def getCatID(table, catName, userSelection):
     con = sqlite3.connect("budget.db")
     cur = con.cursor()
 
-    sqlString = f"SELECT {table.get_idColumnName()} FROM {table.get_name()} WHERE CostCatName = \"{catName}\""
+    sqlString = f"SELECT {table.get_idColumnName()} FROM {table.get_name()} WHERE {catName} = \"{userSelection}\""
+    print(sqlString)
 
     result = cur.execute(sqlString).fetchall()
 
