@@ -1,9 +1,7 @@
 from DisplayMenu import *
 from userInput import *
 from tableSetup import *
-from datetime import date
 from menuFunctions import *
-import sqlite3
 
 editableArea = 40
 bufferZone = 3

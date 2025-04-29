@@ -2,6 +2,7 @@ from DisplayMenu import *
 from userInput import *
 from tableSetup import *
 from readingData import *
+from datetime import date
 
 editableArea = 40
 bufferZone = 3
