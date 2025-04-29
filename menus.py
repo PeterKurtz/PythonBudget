@@ -4,7 +4,31 @@ from tableSetup import *
 from menuFunctions import *
 
 def moneyInOut():
-    print("Went to moneyInOut")
+    title = "Log Money In/Out"
+    request = "Select an action"
+    choices = ["Add money spent on the budget", "Add money spent on savings", "Add money saved", "Add money received", "Update total in bank"]
+
+    printMenu(title, request, choices)
+
+    listOfMethods = [lambda: moneySpentOnBudget(), 
+                     lambda: moneySpentOnSavings(), 
+                     lambda: addMoneySaved(), 
+                     lambda: addMoneyReceived(), 
+                     lambda: updateBank()]
+    
+    while True:
+        userInput = getValidInt(len(choices))
+
+        if userInput == 'b':
+            return
+
+        methodStatus = listOfMethods[userInput - 1]()
+
+        if methodStatus == 'b':
+            continue
+
+        else:
+            return
 
 def createBudget():
     title = "Set a Budget"
@@ -14,15 +38,6 @@ def createBudget():
                      lambda: printAndGetFloat("Amount", "How much do you want to set?")]
     
     processData(listOfMethods, RegularCostBudget)
-
-def setGoal():
-    title = "Set a Savings Goal"
-    listOfMethods = [lambda: chooseCategory(SavingsCat, "SavingsCatName", title, "What savings category do you want to set?"),
-                     lambda: printAndGetDate(title, "What date do you want the goal to be set for?"),
-                     lambda: printAndGetFloat("Amount", "How much do you want to set?")]
-    
-    processData(listOfMethods, SavingsGoal)
-
 
 def createCategory():
     tables = [SavingsCat, RegularCostCat, InvestmentCat, PaymentCat, BankCat]
@@ -48,6 +63,14 @@ def createCategory():
 
             else:
                 return
+            
+def setGoal():
+    title = "Set a Savings Goal"
+    listOfMethods = [lambda: chooseCategory(SavingsCat, "SavingsCatName", title, "What savings category do you want to set?"),
+                     lambda: printAndGetDate(title, "What date do you want the goal to be set for?"),
+                     lambda: printAndGetFloat("Amount", "How much do you want to set?")]
+    
+    processData(listOfMethods, SavingsGoal)
 
 def mainMenu():
 

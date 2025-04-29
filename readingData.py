@@ -21,7 +21,6 @@ def getCatID(table, catName, userSelection):
     cur = con.cursor()
 
     sqlString = f"SELECT {table.get_idColumnName()} FROM {table.get_name()} WHERE {catName} = \"{userSelection}\""
-    print(sqlString)
 
     result = cur.execute(sqlString).fetchall()
 
