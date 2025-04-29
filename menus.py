@@ -67,8 +67,9 @@ def createCategory():
 def setGoal():
     title = "Set a Savings Goal"
     listOfMethods = [lambda: chooseCategory(SavingsCat, "SavingsCatName", title, "What savings category do you want to set?"),
-                     lambda: printAndGetDate(title, "What date do you want the goal to be set for?"),
-                     lambda: printAndGetFloat("Amount", "How much do you want to set?")]
+                     lambda: printAndGetFloat("Amount", "How much do you want to set?"),
+                     lambda: printAndGetDate(title, "What date do you want the goal to be set for?")
+                    ]
     
     processData(listOfMethods, SavingsGoal)
 

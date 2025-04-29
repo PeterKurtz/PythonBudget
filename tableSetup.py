@@ -64,7 +64,7 @@ SavingsGoal = Table("SavingsGoal", ColumnsForSavingsGoal, "Savings Goals", "Savi
 InvestmentID = Column("InvestmentID", "INTEGER", True, "Investment ID")
 CreationDate = Column("CreationDate", "DATE", False, "Date cateegory was created")
 InvestmentName = Column("InvestmentName", "TEXT", False, "Name of category")
-ColumnsForInvestmentCat = [InvestmentID, CreationDate, InvestmentName]
+ColumnsForInvestmentCat = [InvestmentID, InvestmentName, CreationDate]
 InvestmentCat = Table("InvestmentCat", ColumnsForInvestmentCat, "Investment Categories", "InvestmentID")
 
 #Investments Setup
@@ -102,14 +102,8 @@ BankCat = Table("BankCat", ColumnsForBankCat, "Categories of Bank.", BankID.get_
 BankBalanceID = ForeignIDColumn("BankBalanceID", "INTEGER", False, "Payment ID for bank categories", "BankCat", "BankBalanceID")
 BankDate = Column("BankDate", "DATE", False, "Date Bank info was inputed")
 BankBalance = Column("BankBalance", "NUMERIC", False, "Amount in bank.")
-IsCurrent = Column("IsCurrent", "INTEGER", False, "Indicates if balance is current")
-ColumnsForBankBalance = [BankBalanceID, BankDate, BankBalance, IsCurrent]
+Explanation = Column("Explanation", "TEXT", False, "Explanation for bank balance")
+ColumnsForBankBalance = [BankBalanceID, BankDate, BankBalance, Explanation]
 BankBalance = Table("BankBalance", ColumnsForBankBalance, "Bank Balance", BankBalanceID.get_name())
 
 allTables = [RegularCostCat, RegularCosts, RegularCostBudget, SavingsCat, Savings, SavingsTotal, SavingsGoal, IrregularCosts, InvestmentCat, Investments, PaymentCat, Payments, BankCat, BankBalance]
-
-#for table in allTables:
-#    print(table.CreateSQLTable())
-#    print()
-
-#print(BankCat.CreateSQLTable())

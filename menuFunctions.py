@@ -127,11 +127,11 @@ def printMenu(title, request, choices):
     printChoices(title, request, editableArea, bufferZone, choices)
 
 def createMenusAndProcess(title, catTable, catVariable, catRequest, tableToInsert):
-    dataToInsert = []
     listOfMethods = [lambda: chooseCategory(catTable, catVariable, title, catRequest), 
-                     lambda: printAndGetDescription(title, "Add a description"), 
+                     lambda: printAndGetDate(title, "Add date"),
                      lambda: printAndGetFloat(title, "Add a dollar amount"), 
-                     lambda: printAndGetDate(title, "Add date")]
+                     lambda: printAndGetDescription(title, "Add a description"), 
+                    ]
     
     processData(listOfMethods, tableToInsert)
 
