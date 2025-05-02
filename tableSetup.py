@@ -27,7 +27,7 @@ CostID = ForeignIDColumn("CostID", "INTEGER", False, "Cost ID for Regular Costs"
 CostDate = Column("CostDate", "DATE", False, "Date cost was done")
 Amount = Column("Amount", "NUMERIC", False, "Amount spent")
 Explanation = Column("Explanation", "TEXT", False, "Explanation for transaction")
-ColumnsForRegularCosts = [CostID, Amount, Explanation, CostDate]
+ColumnsForRegularCosts = [CostID, CostDate, Amount, Explanation]
 RegularCosts = Table("RegularCosts", ColumnsForRegularCosts, "All regular cost transactions", CostID.get_name())
 
 #RegularCostBudget Setup
