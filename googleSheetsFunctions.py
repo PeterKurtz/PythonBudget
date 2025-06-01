@@ -6,6 +6,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from links import *
+import sqlite3
 
 sheetValues = []
 
@@ -82,3 +83,26 @@ def writeToSheet(creds, data, range_name):
     except HttpError as err:
         print(err)
 
+def getRegCostsValues(year, month):
+  if month == 12:
+    nextMonth = 1
+    nextYear = year + 1
+  else:
+    nextMonth = month + 1
+    nextYear = year
+
+  sqlQuerry=f"""SELECT rcc.CostCatName, rc.CostDate, rc.Amount, rc.Explanation
+                FROM RegularCosts rc
+                INNER JOIN RegularCostCat rcc
+                  ON rc.CostID = rcc.CostID
+                WHERE rc.CostDate >= '{month}/1/{year}'
+                  AND rc.CostDate < '{nextMonth}/1/{year}'"""
+  
+  con = sqlite3.connect("budget.db")
+  cur = con.cursor()
+  result = cur.execute(sqlQuerry).fetchall()
+  con.close()
+
+  return result
+
+print(getRegCostsValues(2025, 4))
