@@ -8,8 +8,6 @@ from googleapiclient.errors import HttpError
 from links import *
 import sqlite3
 
-sheetValues = []
-
 def certify():
   creds = None
   # The file token.json stores the user's access and refresh tokens, and is
@@ -36,6 +34,7 @@ def getSheetValues(creds, sheetName):
   """Shows basic usage of the Sheets API.
   Prints values from a sample spreadsheet.
   """
+  sheetValues = []
   try:
     service = build("sheets", "v4", credentials=creds)
 
@@ -96,7 +95,8 @@ def getRegCostsValues(year, month):
                 INNER JOIN RegularCostCat rcc
                   ON rc.CostID = rcc.CostID
                 WHERE rc.CostDate >= '{month}/1/{year}'
-                  AND rc.CostDate < '{nextMonth}/1/{year}'"""
+                  AND rc.CostDate < '{nextMonth}/1/{year}'
+                ORDER BY rc.CostDate"""
   
   con = sqlite3.connect("budget.db")
   cur = con.cursor()
@@ -105,4 +105,9 @@ def getRegCostsValues(year, month):
 
   return result
 
-print(getRegCostsValues(2025, 4))
+values = getRegCostsValues(2025, 4)
+
+creds = certify()
+
+writeToSheet(creds, [("CostCatName", "CostDate", "Amount", "Explanation")], "4/2025!A1")
+writeToSheet(creds, values, "4/2025!A2")
