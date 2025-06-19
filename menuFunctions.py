@@ -135,6 +135,16 @@ def createMenusAndProcess(title, catTable, catVariable, catRequest, tableToInser
     
     processData(listOfMethods, tableToInsert)
 
+def createInvestmentMenuAndProcess(title, catTable, catVariable, catRequest, tableToInsert):
+    listOfMethods = [lambda: chooseCategory(catTable, catVariable, title, catRequest), 
+                     lambda: printAndGetDate(title, "Add date"),
+                     lambda: printAndGetFloat(title, "Add amount  paid"), 
+                     lambda: printAndGetFloat(title, "Add total amount"), 
+                     lambda: printAndGetDescription(title, "Add a description"), 
+                    ]
+    
+    processData(listOfMethods, tableToInsert)
+
 def moneySpentOnBudget():
     createMenusAndProcess("Log Budget Spending", RegularCostCat, "CostCatName", "What budget category do you want to log?", RegularCosts)
 
@@ -143,6 +153,9 @@ def moneySpentOnSavings():
 
 def addMoneySaved():
     createMenusAndProcess("Log Money Saved", SavingsCat, "SavingsCatName", "What savings category do you want to allocate money to?", Savings)
+
+def addMoneyInvested():
+    createInvestmentMenuAndProcess("Log Money Invested", InvestmentCat, "InvestmentName", "What investment category do you want to allocate money to?", Investments)
 
 def updateBank():
     createMenusAndProcess("Update Total in Bank", BankCat, "BankName", "What bank category do you want to allocate money to?", BankBalance)

@@ -109,5 +109,7 @@ values = getRegCostsValues(2025, 4)
 
 creds = certify()
 
+
+
 writeToSheet(creds, [("CostCatName", "CostDate", "Amount", "Explanation")], "4/2025!A1")
-writeToSheet(creds, values, "4/2025!A2")
+#writeToSheet(creds, values, "4/2025!A2")

@@ -6,13 +6,14 @@ from menuFunctions import *
 def moneyInOut():
     title = "Log Money In/Out"
     request = "Select an action"
-    choices = ["Add money spent on the budget", "Add money spent on savings", "Add money saved", "Add money received", "Update total in bank"]
+    choices = ["Add money spent on the budget", "Add money spent on savings", "Add money saved", "Add money invested", "Add money received", "Update total in bank"]
 
     printMenu(title, request, choices)
 
     listOfMethods = [lambda: moneySpentOnBudget(), 
                      lambda: moneySpentOnSavings(), 
                      lambda: addMoneySaved(), 
+                     lambda: addMoneyInvested(),
                      lambda: addMoneyReceived(), 
                      lambda: updateBank()]
     
