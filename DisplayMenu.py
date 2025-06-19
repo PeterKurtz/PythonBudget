@@ -1,3 +1,4 @@
+#Adds space and borders to menu
 def addSpaceAndBorders(statement, editableArea, bufferSpace):
     spacesToBuffer = ' '*bufferSpace
 
